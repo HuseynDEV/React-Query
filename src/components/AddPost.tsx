@@ -1,6 +1,7 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import PostForm from "./PostForm"
 import { createPost } from "../api/posts"
+import { v4 as uuidv4 } from 'uuid';
 
 export type newPostTypeID = {
     id: string,
@@ -11,15 +12,22 @@ export type newPostType = {
     body: string
 }
 
+
+
 const AddPost = () => {
 
+    const queryClient=useQueryClient()
+
     const createPostMutation = useMutation({
-        mutationFn: createPost
+        mutationFn: createPost,
+        onSuccess:()=>{
+            queryClient.invalidateQueries({queryKey:['posts']})
+        }
     })
 
     const handleAddPost = (post: newPostType) => {
         createPostMutation.mutate({
-            id: 3,
+            id: uuidv4(),
             ...post
         })
     }

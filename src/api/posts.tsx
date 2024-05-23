@@ -1,4 +1,4 @@
-import { newPostTypeId } from "../components/AddPost"
+import { newPostTypeID } from "../components/AddPost"
 
 export async function fetchPosts() {
     const response = await fetch("http://localhost:3000/posts")
@@ -11,13 +11,29 @@ export async function fetchPost(id: string) {
     return response.json()
 }
 
-export async function createPost(newPost: newPostTypeId) {
+export async function createPost(newPost: newPostTypeID) {
     const response = await fetch(`http://localhost:3000/posts`, {
         method: 'POST',
         headers: {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify(newPost)
+
+    })
+    return response.json
+
+}
+
+
+
+export async function updatePost(updatedPost: newPostTypeID) {
+    console.log(updatedPost, 'updatedPost')
+    const response = await fetch(`http://localhost:3000/posts/${updatedPost.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(updatedPost)
 
     })
     return response.json

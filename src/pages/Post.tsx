@@ -6,6 +6,10 @@ const Post = () => {
 
     const { id } = useParams<{ id: string }>()
 
+    if (!id) {
+        return <div>Error: No ID provided</div>;
+    }
+
     const { isLoading, isError, data: post, error } = useQuery<PostType, Error>({
         queryKey: ['post', id],
         queryFn: () => fetchPost(id)

@@ -1,12 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from "react"
-import { newPostType } from "./AddPost"
+import { newPostType, newPostTypeID } from "./AddPost"
 
 type submitType = {
-    onSubmit: (data: newPostType) => void
+    onSubmit: (data: newPostType) => void,
+    initialValue?: newPostTypeID
 }
 
-const PostForm = ({ onSubmit }: submitType) => {
-
+const PostForm = ({ onSubmit, initialValue }: submitType) => {
+console.log(initialValue, 'initialValue')
 
     type PostType = {
         title: string,
@@ -14,8 +15,8 @@ const PostForm = ({ onSubmit }: submitType) => {
     }
 
     const [post, setPost] = useState<PostType>({
-        title: '',
-        body: ''
+        title: initialValue?.title || '',
+        body: initialValue?.body || ''
     })
 
 
@@ -27,11 +28,11 @@ const PostForm = ({ onSubmit }: submitType) => {
         }))
     }
 
-    const renderField = (label: string) => {
+    const renderField = (label: keyof PostType) => {
         return (
             <div>
                 <label>{label}</label>
-                <input onChange={handleChange} type="text" name={label} />
+                <input onChange={handleChange} value={post[label]} type="text" name={label} />
             </div>
         )
     }
@@ -39,10 +40,9 @@ const PostForm = ({ onSubmit }: submitType) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         onSubmit(post)
-        console.log(post)
         setPost({
             title: "",
-            body: ""
+            body: "",
         })
 
 
